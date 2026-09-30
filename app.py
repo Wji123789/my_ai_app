@@ -38,10 +38,20 @@ def _load():
 try:
     model, index, chunks, mods, parents = _load()
 except FileNotFoundError as e:
-    st.error(str(e))
+    st.error(f"知识库文件缺失\n\n{e}")
     st.stop()
 except llm.LLMError as e:
-    st.error(str(e))
+    st.error(f"模型配置有误\n\n{e}")
+    st.stop()
+except Exception as e:                      # noqa: BLE001 —— 兜底，见下
+    # 这里刻意捕获所有未预期的异常。
+    # 原因：Streamlit 默认会把异常详情涂黑（防泄漏），云端排查时只剩一行
+    # “ValueError: 本应用遇到了错误”，拿不到任何线索。
+    # 与其让页面变成一片无法诊断的红色，不如把真实错误直接摊开。
+    import traceback
+    st.error(f"启动失败：{type(e).__name__}: {e}")
+    with st.expander("查看完整堆栈（排查用）", expanded=True):
+        st.code(traceback.format_exc())
     st.stop()
 
 MODULES = rag.modules_present()
