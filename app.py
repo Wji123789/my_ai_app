@@ -6,6 +6,7 @@ app.py —— Streamlit 主程序
   rag.py  负责检索与生成
   llm.py  负责模型调用（重试、异常、用量）
   prompts.py 负责提示词
+  config.py 负责参数配置
 
 界面与业务逻辑分离的好处：改界面不影响逻辑，改逻辑不用动界面。
 
@@ -15,13 +16,14 @@ app.py —— Streamlit 主程序
 
 import streamlit as st
 
+import config
 import llm
 import prompts
 import rag
 
 st.set_page_config(
-    page_title="课程学习助手",
-    page_icon="📚",
+    page_title="公考常识学习助手",
+    page_icon="🎓",
     layout="wide",
 )
 
@@ -34,7 +36,7 @@ def _load():
 
 # ---------- 启动检查 ----------
 try:
-    model, index, chunks = _load()
+    model, index, chunks, mods, parents = _load()
 except FileNotFoundError as e:
     st.error(str(e))
     st.stop()
@@ -42,23 +44,49 @@ except llm.LLMError as e:
     st.error(str(e))
     st.stop()
 
+MODULES = rag.modules_present()
+
 
 # ---------- 侧边栏 ----------
 with st.sidebar:
-    st.header("⚙️ 设置")
+    st.header("⚙️ 检索设置")
 
-    top_k = st.slider("检索片段数 top_k", 1, 8, 5,
+    module = st.selectbox(
+        "限定范围",
+        ["全部"] + MODULES,
+        help="知识库已合并为一部《公考常识手册》，其下分政治/人文/科技/法律/经济"
+             "五类。明确知道考点属于哪一类时，限定范围能明显减少串题。",
+    )
+
+    top_k = st.slider("检索片段数 top_k", 1, 8, config.DEFAULT_TOP_K,
                       help="太小可能检索不全，太大引入无关内容并增加 token 开销。"
                            "默认 5 是本项目评估得出的最优值（见 evaluate.py）")
 
-    min_score = st.slider("相似度阈值", 0.0, 0.8, 0.0, 0.05,
+    use_rerank = st.toggle(
+        "启用 Rerank 重排",
+        value=config.RERANK_ENABLED,
+        help="两阶段检索：先向量召回 20 条候选，再用交叉编码器精排。"
+             "准确率更高，但首次使用需下载约 1GB 模型，"
+             "在内存受限的环境下会自动降级为纯向量检索。",
+    )
+
+    min_score = st.slider("相似度阈值", 0.0, 0.8, config.DEFAULT_MIN_SCORE, 0.05,
                           help="低于该阈值的检索结果会被丢弃；"
                                "设为 0 表示不过滤。用于拦截知识库之外的问题。")
 
+    use_rewrite = st.checkbox(
+        "启用查询改写",
+        value=False,
+        help="把疑问句改写成陈述式查询再检索。实测对本知识库收益有限，"
+             "且每次问答多消耗一次 API 调用，默认关闭。",
+    )
+
     st.divider()
     st.caption("**知识库**")
+    st.write(f"手册：{config.BOOK_TITLE}")
     st.write(f"文档片段：{len(chunks)}")
     st.write(f"索引向量：{index.ntotal}")
+    st.write(f"覆盖分类：{len(MODULES)} 类（{'、'.join(MODULES)}）")
 
     st.divider()
     st.caption("**本次会话消耗**")
@@ -76,13 +104,16 @@ with st.sidebar:
 
 
 # ---------- 主界面 ----------
-st.title("📚 课程学习助手")
-st.caption("基于《大模型应用实训》实验指导书构建 —— RAG 知识问答 + 学习计划生成")
+st.title("🎓 公考常识学习助手")
+st.caption(
+    f"基于《{config.BOOK_TITLE}》构建 —— "
+    "政治 / 人文 / 科技 / 法律 / 经济 五大分类 · RAG 知识问答 + 备考计划生成"
+)
 
-tab_qa, tab_plan = st.tabs(["💬 知识问答", "📅 学习计划"])
+tab_qa, tab_plan = st.tabs(["💬 常识问答", "📅 备考计划"])
 
 # ============================================================
-# 页签一：知识问答
+# 页签一：常识问答
 # ============================================================
 with tab_qa:
     if "messages" not in st.session_state:
@@ -95,10 +126,10 @@ with tab_qa:
             if m.get("sources"):
                 with st.expander(f"查看引用来源（{len(m['sources'])} 段）"):
                     for i, (text, score) in enumerate(m["sources"], 1):
-                        st.caption(f"片段 {i}　相似度 {score:.4f}")
+                        st.caption(f"片段 {i}　得分 {score:.4f}")
                         st.text(text[:400] + ("…" if len(text) > 400 else ""))
 
-    question = st.chat_input("请输入你的问题，例如：实验四的思考题有哪些？")
+    question = st.chat_input("请输入你的问题，例如：正当防卫的构成条件是什么？")
 
     if question:
         st.session_state.messages.append(
@@ -110,7 +141,13 @@ with tab_qa:
             with st.spinner("检索并生成回答…"):
                 try:
                     answer, hits = rag.answer_question(
-                        question, top_k=top_k, min_score=min_score)
+                        question,
+                        top_k=top_k,
+                        min_score=min_score,
+                        module="" if module == "全部" else module,
+                        use_rewrite=use_rewrite,
+                        use_rerank=use_rerank,
+                    )
                 except llm.LLMError as e:
                     answer, hits = f"⚠️ 调用失败：{e}", []
 
@@ -118,27 +155,29 @@ with tab_qa:
             if hits:
                 with st.expander(f"查看引用来源（{len(hits)} 段）"):
                     for i, (text, score) in enumerate(hits, 1):
-                        st.caption(f"片段 {i}　相似度 {score:.4f}")
+                        st.caption(f"片段 {i}　得分 {score:.4f}")
                         st.text(text[:400] + ("…" if len(text) > 400 else ""))
 
         st.session_state.messages.append({
-            "role": "assistant", "content": answer, "sources": hits,
+            "role": "assistant", "content": answer,
+            "sources": [(t, s) for t, s, _ in hits],
         })
 
 # ============================================================
-# 页签二：学习计划
+# 页签二：备考计划
 # ============================================================
 with tab_plan:
-    st.markdown("描述一下你的情况，助手会根据课程内容制定学习计划。")
+    st.markdown("描述一下你的备考情况，助手会根据常识手册的内容制定复习计划。")
 
     with st.form("plan_form"):
         profile = st.text_area(
             "你的情况",
-            value="我是编程初学者，每天能投入 2 小时，想在 4 周内完成这门课的五个实验，"
-                  "重点想搞懂 RAG 那部分。",
+            value="我是应届生，行测常识部分很弱，每天能投入 1 小时，"
+                  "想在 4 周内把政治和法律两大块过一遍，"
+                  "科技和人文只求眼熟。",
             height=110,
         )
-        submitted = st.form_submit_button("生成学习计划", type="primary")
+        submitted = st.form_submit_button("生成备考计划", type="primary")
 
     if submitted:
         if not profile.strip():
@@ -146,7 +185,10 @@ with tab_plan:
         else:
             with st.spinner("正在检索资料并制定计划…"):
                 try:
-                    plan, hits = rag.generate_study_plan(profile)
+                    plan, hits = rag.generate_study_plan(
+                        profile,
+                        module="" if module == "全部" else module,
+                    )
                 except llm.LLMError as e:
                     st.error(f"调用失败：{e}")
                     plan, hits = None, []
@@ -174,7 +216,7 @@ with tab_plan:
 
                 key_points = plan.get("key_points", [])
                 if key_points:
-                    st.markdown("### ⭐ 重点与易错点")
+                    st.markdown("### ⭐ 高频考点与易错点")
                     for k in key_points:
                         st.markdown(f"- {k}")
 
@@ -184,8 +226,8 @@ with tab_plan:
 
                 if hits:
                     with st.expander("查看计划依据的资料来源"):
-                        for i, (text, score) in enumerate(hits, 1):
-                            st.caption(f"片段 {i}　相似度 {score:.4f}")
+                        for i, (text, score, _) in enumerate(hits, 1):
+                            st.caption(f"片段 {i}　得分 {score:.4f}")
                             st.text(text[:300] + ("…" if len(text) > 300 else ""))
 
                 st.caption(llm.usage_text().replace("\n", " ｜ "))

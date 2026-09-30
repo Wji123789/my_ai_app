@@ -12,6 +12,7 @@ llm.py —— 大模型调用封装层
 """
 
 import json
+import logging
 import os
 import time
 
@@ -23,17 +24,17 @@ from openai import (
     RateLimitError,
 )
 
-# ---------- 配置 ----------
-MODEL = "deepseek-chat"
-BASE_URL = "https://api.deepseek.com"
+import config
 
-# 单价（元/百万 token），deepseek-flash 空闲时段；高峰时段翻倍
-INPUT_PRICE = 1.0
-OUTPUT_PRICE = 4.0
+logger = logging.getLogger("llm")
 
-# 重试策略
-MAX_RETRIES = 3
-BASE_WAIT = 1.0          # 指数退避基数：1s, 2s, 4s
+# ---------- 配置（集中在 config.py，本文件不再自定义） ----------
+MODEL = config.LLM_MODEL
+BASE_URL = config.LLM_BASE_URL
+INPUT_PRICE = config.LLM_INPUT_PRICE
+OUTPUT_PRICE = config.LLM_OUTPUT_PRICE
+MAX_RETRIES = config.LLM_MAX_RETRIES
+BASE_WAIT = config.LLM_BASE_WAIT
 
 # 可重试的异常：这些通常都是临时故障，过一会儿重试就能成功
 RETRYABLE = (RateLimitError, APIConnectionError, APITimeoutError)
@@ -168,8 +169,8 @@ def chat(messages, temperature=0.3, max_tokens=1000, json_mode=False,
                 break
             wait = BASE_WAIT * (2 ** attempt)      # 1s -> 2s -> 4s
             USAGE["retries"] += 1
-            print(f"  ⚠️ 调用失败（{type(e).__name__}），{wait:.0f}s 后重试"
-                  f"（{attempt + 1}/{max_retries}）…")
+            logger.warning("调用失败（%s），%.0fs 后重试（%d/%d）…",
+                           type(e).__name__, wait, attempt + 1, max_retries)
             time.sleep(wait)
 
         except APIError as e:
@@ -197,7 +198,7 @@ def chat_json(messages, temperature=0.0, max_tokens=1000):
         try:
             return json.loads(raw)
         except json.JSONDecodeError:
-            print(f"  ⚠️ 第 {attempt + 1} 次返回的不是合法 JSON，重试…")
+            logger.warning("第 %d 次返回的不是合法 JSON，重试…", attempt + 1)
 
-    print("  ❌ JSON 解析连续失败")
+    logger.error("JSON 解析连续失败")
     return None
