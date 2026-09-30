@@ -164,7 +164,9 @@ with tab_qa:
             st.markdown(answer)
             if hits:
                 with st.expander(f"查看引用来源（{len(hits)} 段）"):
-                    for i, (text, score) in enumerate(hits, 1):
+                    # hits 的元素是三元组 (文本, 分数, 片段下标)，
+                    # 这里第三个值（下标）仅用于调试，展示时忽略
+                    for i, (text, score, _) in enumerate(hits, 1):
                         st.caption(f"片段 {i}　得分 {score:.4f}")
                         st.text(text[:400] + ("…" if len(text) > 400 else ""))
 
