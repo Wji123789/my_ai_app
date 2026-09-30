@@ -1,0 +1,13 @@
+# Streamlit 应用配置
+# 部署到 Streamlit Community Cloud 时会自动读取本文件
+
+[theme]
+base = "light"
+primaryColor = "#4C72B0"
+
+[server]
+# 上传文件大小上限（本项目不需要上传，保持默认即可）
+maxUploadSize = 10
+
+[browser]
+gatherUsageStats = false

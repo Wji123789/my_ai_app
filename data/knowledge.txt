@@ -1,0 +1,1037 @@
+logo
+
+**《大模型应用实训》**
+
+**实验指导书**
+
+|  |  |
+| --- | --- |
+| 学      号： |  |
+| 姓      名： |  |
+| 班      级： |  |
+| 指导教师： | 刘丽华 |
+| 学       时： | 1学时 |
+| 教 研 室： | 信息与计算科学 |
+| 学      院： | 数学与计算机科学学院 |
+
+2026年9月
+
+目 录
+
+实验一：大模型平台认知与API调用基础 1
+
+[1.1 实验目的 1](#11-实验目的)
+
+[1.2 理论基础 1](#12-理论基础)
+
+[1.2.1 大语言模型概述 1](#121-大语言模型概述)
+
+[1.2.2 API调用规范（OpenAI兼容接口） 1](#122-api调用规范openai兼容接口)
+
+[1.2.3 提示词工程 1](#123-提示词工程)
+
+[1.3 实验内容 1](#13-实验内容)
+
+[实验1-1：API基础调用 1](#实验1-1api基础调用)
+
+[实验1-2：多轮对话与消息历史管理 2](#实验1-2多轮对话与消息历史管理)
+
+[实验1-3：结构化输出与JSON解析 3](#实验1-3结构化输出与json解析)
+
+[实验1-4：Token统计与成本控制 4](#实验1-4token统计与成本控制)
+
+[1.4 实验任务 4](#14-实验任务)
+
+[1.5 思考题 5](#15-思考题)
+
+[实验二：AI小游戏开发 5](#实验二ai小游戏开发)
+
+[2.1 实验目的 5](#21-实验目的)
+
+[2.2 理论基础 5](#22-理论基础)
+
+[2.2.1 大模型赋能游戏的典型场景 5](#221-大模型赋能游戏的典型场景)
+
+[2.2.2 游戏循环设计 5](#222-游戏循环设计)
+
+[2.3 实验内容 5](#23-实验内容)
+
+[实验2-1：AI文字冒险游戏 5](#实验2-1ai文字冒险游戏)
+
+[实验2-2：AI猜谜/成语接龙游戏 6](#实验2-2ai猜谜成语接龙游戏)
+
+[实验2-3：带图形界面的小游戏（Gradio） 7](#实验2-3带图形界面的小游戏gradio)
+
+[2.4 实验任务 8](#24-实验任务)
+
+[2.5 思考题 9](#25-思考题)
+
+[实验三：网络热词分析与舆情洞察 9](#实验三网络热词分析与舆情洞察)
+
+[3.1 实验目的 9](#31-实验目的)
+
+[3.2 理论基础 9](#32-理论基础)
+
+[3.2.1 热词数据来源 9](#321-热词数据来源)
+
+[3.2.2 大模型文本分析能力 9](#322-大模型文本分析能力)
+
+[3.2.3 可视化方法 9](#323-可视化方法)
+
+[3.3 实验内容 9](#33-实验内容)
+
+[实验3-1：热搜数据采集 9](#实验3-1热搜数据采集)
+
+[实验3-2：大模型热词摘要与情感分析 10](#实验3-2大模型热词摘要与情感分析)
+
+[实验3-3：热词可视化 11](#实验3-3热词可视化)
+
+[实验3-4：自动生成舆情日报（可选扩展） 12](#实验3-4自动生成舆情日报可选扩展)
+
+[3.4 实验任务 13](#34-实验任务)
+
+[3.5 思考题 13](#35-思考题)
+
+[实验四：AI智能体与RAG知识库应用开发 13](#实验四ai智能体与rag知识库应用开发)
+
+[4.1 实验目的 13](#41-实验目的)
+
+[4.2 理论基础 13](#42-理论基础)
+
+[4.2.1 RAG架构 13](#421-rag架构)
+
+[4.2.2 Embedding与相似度检索 13](#422-embedding与相似度检索)
+
+[4.2.3 AI应用界面开发 14](#423-ai应用界面开发)
+
+[4.3 实验内容 14](#43-实验内容)
+
+[实验4-1：文档加载与切分 14](#实验4-1文档加载与切分)
+
+[实验4-2：向量化与FAISS索引 14](#实验4-2向量化与faiss索引)
+
+[实验4-3：检索增强问答 15](#实验4-3检索增强问答)
+
+[实验4-4：Streamlit问答APP 16](#实验4-4streamlit问答app)
+
+[4.4 实验任务 17](#44-实验任务)
+
+[4.5 思考题 17](#45-思考题)
+
+[实验五：综合项目实战——端到端大模型应用开发 17](#实验五综合项目实战端到端大模型应用开发)
+
+[5.1 实验目的 17](#51-实验目的)
+
+[5.2 项目背景 18](#52-项目背景)
+
+[5.3 理论基础 18](#53-理论基础)
+
+[5.3.1 应用架构 18](#531-应用架构)
+
+[5.3.2 评估指标 18](#532-评估指标)
+
+[5.4 实验内容 18](#54-实验内容)
+
+[实验5-2：核心功能开发 19](#实验5-2核心功能开发)
+
+[实验5-3：评估与迭代 19](#实验5-3评估与迭代)
+
+[实验5-4：部署与展示 20](#实验5-4部署与展示)
+
+[5.5 实验任务 20](#55-实验任务)
+
+[5.6 拓展任务（选做） 21](#56-拓展任务选做)
+
+[附  录 21](#附--录)
+
+**实训课程目标**
+
+通过理论学习与动手实践相结合的方式，掌握利用主流大模型平台（DeepSeek、通义千问、Kimi、智谱GLM、OpenAI兼容API等）进行应用开发的基本技能。课程重点在于提示词工程、大模型API调用、AI原生应用（小游戏、热词分析、智能问答APP）的开发与部署。
+
+1. 掌握主流大模型平台的使用方法与API调用规范（OpenAI兼容接口）
+2. 理解大模型应用开发的基本流程：需求分析→提示词设计→API集成→界面开发→评估迭代
+3. 能够独立完成AI小游戏开发、热词分析、RAG知识库问答APP等典型应用
+4. 培养工程化思维，掌握API密钥管理、成本控制、结果评估与应用部署规范
+
+**实训环境与工具**
+
+|  |  |  |
+| --- | --- | --- |
+| **工具/库** | **版本建议** | **用途** |
+| Python | 3.10+ | 编程语言 |
+| Jupyter Notebook / VS Code | 最新版 | 交互式开发环境 |
+| openai (Python SDK) | 1.30+ | 调用各大模型兼容API |
+| requests | 2.31+ | HTTP接口调用、数据爬取 |
+| Streamlit / Gradio | 最新版 | 快速构建Web应用界面 |
+| pyecharts / matplotlib | 最新版 | 热词数据可视化 |
+| scikit-learn | 1.3+ | 文本特征与情感分析基线模型 |
+| sentence-transformers / faiss-cpu | 最新版 | 文本向量与向量检索（RAG） |
+| python-docx 等办公库 | 最新版 | 报告自动生成等扩展应用 |
+| Git | 2.40+ | 版本管理与项目协作 |
+
+**硬件要求**
+
+- CPU：支持现代指令集的处理器，内存至少8GB RAM（推荐16GB）。
+- 网络：可访问大模型API服务（或使用国内平台镜像与代理网关）。
+- GPU：实验一至四、六通过API调用大模型，无需本地GPU；实验五（深度卷积网络）建议在GPU环境下训练，CPU亦可完成小规模实验。
+
+# **实验一：大模型平台认知与API调用基础**
+
+## **1.1 实验目的**
+
+- 了解主流大模型平台（DeepSeek、通义千问、Kimi、智谱GLM、OpenAI等）的特点与差异
+- 掌握大模型API的认证、调用与参数配置方法
+- 掌握提示词工程（Prompt Engineering）的基本技巧
+
+## **1.2 理论基础**
+
+### **1.2.1 大语言模型概述**
+
+大语言模型（LLM）是基于Transformer架构、在海量文本上预训练的生成式模型，具备文本生成、语义理解、推理与工具调用等能力。主流模型包括DeepSeek-V3/R1、通义千问Qwen系列、GLM-4、Kimi、GPT系列等。
+
+### **1.2.2 API调用规范（OpenAI兼容接口）**
+
+国内外主流平台大多提供与OpenAI兼容的REST API，核心要素包括：API Key（身份认证）、Base URL（接口地址）、model（模型名）、messages（对话消息列表）、temperature（采样温度）、max_tokens（最大输出长度）等。
+
+### **1.2.3 提示词工程**
+
+- 角色设定：为模型指定明确的身份与任务边界
+- 少样本示例（Few-shot）：通过示例引导输出格式
+- 结构化输出：要求模型以JSON/Markdown等格式返回
+- 思维链（Chain-of-Thought）：让模型分步推理
+
+## **1.3 实验内容**
+
+### **实验1-1：API基础调用**
+
+【实验说明】本实验完成从零到第一次成功调用大模型API的完整流程，为后续所有实验打下基础。
+
+步骤1：选择一个大模型平台（推荐DeepSeek，注册简单且有免费额度），在控制台创建API Key，并将其保存到环境变量中（如DEEPSEEK_API_KEY），切勿直接写在代码里。
+
+步骤2：安装Python SDK：pip install openai。国内主流平台均采用与OpenAI兼容的接口规范，因此同一份代码只需修改base_url和model即可切换平台。
+
+步骤3：创建OpenAI客户端实例，api_key从环境变量读取，base_url填平台提供的地址（DeepSeek为https://api.deepseek.com）。
+
+步骤4：构造messages消息列表：system消息设定模型角色（如"Python助教"），user消息是本次提问内容。消息列表是理解多轮对话的关键数据结构。
+
+步骤5：调用chat.completions.create并传入model、temperature、max_tokens等参数。返回对象中choices\[0].message.content即为模型回答。建议先打印原始返回对象，观察其完整结构。
+
+预期结果：程序输出一句关于数据挖掘的解释性文字。若出现401错误，检查API Key；若出现余额不足提示，检查平台账户额度。
+
+from openai import OpenAI
+
+\# 以DeepSeek平台为例（其他平台仅需修改base_url与model）
+
+client = OpenAI(
+
+api_key="YOUR_API_KEY",
+
+base_url="https://api.deepseek.com"
+
+)
+
+response = client.chat.completions.create(
+
+model="deepseek-chat",
+
+messages=[
+
+{"role": "system", "content": "你是一位耐心的Python助教"},
+
+{"role": "user", "content": "用一句话解释什么是数据挖掘"}
+
+],
+
+temperature=0.7,
+
+max_tokens=200
+
+)
+
+print(response.choices\[0].message.content)
+
+### **实验1-2：多轮对话与消息历史管理**
+
+【实验说明】本实验实现带上下文记忆的多轮对话功能，这是AI小游戏和问答APP的核心基础。
+
+步骤1：定义全局变量history，并预置一条system消息用于固定助手的身份与行为边界。
+
+步骤2：每次用户输入时，先将用户消息追加到history末尾，再将完整history作为messages传给API。模型会根据完整历史理解上下文。
+
+步骤3：收到回复后，将assistant消息同样追加到history，保证下一轮对话时模型"记得"自己说过的话。
+
+步骤4：测试时连续追问（如"它有哪些应用？"），观察模型能否正确指代上一轮内容。
+
+注意事项：history会随对话轮数线性增长，token费用随之增加。工程实践中通常需要限制历史长度（如只保留最近10轮），本实验先观察完整历史的行为即可。
+
+history = \[{"role": "system", "content": "你是乐于助人的学习助手"}]
+
+def chat(user_input):
+
+history.append({"role": "user", "content": user_input})
+
+resp = client.chat.completions.create(model="deepseek-chat",
+
+messages=history, temperature=0.7)
+
+reply = resp.choices\[0].message.content
+
+history.append({"role": "assistant", "content": reply})
+
+return reply
+
+### **实验1-3：结构化输出与JSON解析**
+
+【实验说明】程序要消费模型的输出，必须让模型返回结构化数据（如JSON），本实验掌握这一关键技能。
+
+步骤1：设计提示词，用明确的格式约定约束输出，例如"仅返回JSON"，并给出目标JSON的键名示例。提示词中同时给出待分析的评论文本。
+
+步骤2：将temperature设为0.0，使采样趋于贪心解码，大幅降低输出格式随机性。部分平台支持response_format参数，可强制JSON模式，建议优先使用。
+
+步骤3：用json.loads将模型返回的字符串解析为Python字典，随后即可像普通数据一样访问sentiment、confidence、keywords等字段。
+
+步骤4：增加健壮性处理——将解析代码放入try/except中，解析失败时打印原始输出以便调试，这在后续小游戏实验中会反复用到。
+
+预期结果：程序输出形如{"sentiment": "正面", "confidence": 0.9, "keywords": \["详细", "例子少"]}的字典。
+
+import json
+
+prompt = (
+
+"请分析以下评论的情感倾向，仅返回JSON：\\n"
+
+'{"sentiment": "正面/负面/中性", "confidence": 0~1, "keywords": \[...]}\\n'
+
+"评论：这个实验指导书写得非常详细，就是例子有点少。"
+
+)
+
+resp = client.chat.completions.create(
+
+model="deepseek-chat",
+
+messages=\[{"role": "user", "content": prompt}],
+
+temperature=0.0,
+
+response_format={"type": "json_object"}   # 部分平台支持
+
+)
+
+result = json.loads(resp.choices\[0].message.content)
+
+print(result)
+
+### **实验1-4：Token统计与成本控制**
+
+【实验说明】API按token计费，本实验学会读取用量字段并估算成本，培养成本意识。
+
+步骤1：在API返回对象中，usage字段包含prompt_tokens（输入token数）、completion_tokens（输出token数）和total_tokens（总数）。注意计数在响应对象的usage属性中，而非choices里。
+
+步骤2：登录平台官网查询所用模型的单价（通常按每百万token计价，输入与输出单价不同）。
+
+步骤3：按公式估算单次调用成本：输入token/1,000,000 × 输入单价 + 输出token/1,000,000 × 输出单价。
+
+步骤4：批量测试多条评论分析请求，统计总token消耗与预估总成本，思考如何在提示词层面节省token（如精简system消息、控制max_tokens）。
+
+usage = resp.usage
+
+print(f"输入token: {usage.prompt_tokens}, 输出token: {usage.completion_tokens}")
+
+\# 估算成本 = 输入token/1M * 输入单价 + 输出token/1M * 输出单价
+
+## **1.4 实验任务**
+
+注册至少一个大模型平台账号，完成API Key申请，成功调用一次对话接口并打印返回结果
+
+5. 对比同一提示词在不同temperature（0/0.7/1.5）下的输出差异，截图记录
+6. 设计一个"学习助手"多轮对话程序，支持上下文记忆与清空历史功能
+7. 实现结构化输出：让模型对5条商品评论返回JSON格式的情感分析结果，并统计准确率
+
+## **1.5 思考题**
+
+1. system、user、assistant三种角色在对话中分别承担什么作用？
+2. temperature参数对生成结果有何影响？什么任务适合低温采样？
+3. 为什么实际开发中要对模型输出进行JSON Schema校验？
+
+# **实验二：AI小游戏开发**
+
+## **2.1 实验目的**
+
+- 掌握将大模型API集成到交互式程序中的方法
+- 理解大模型在游戏场景中的应用：剧情生成、NPC对话、智能出题、游戏裁判
+- 掌握控制台/图形界面小游戏的基本开发流程
+
+## **2.2 理论基础**
+
+### **2.2.1 大模型赋能游戏的典型场景**
+
+- 文字冒险游戏：大模型实时生成剧情分支与场景描述
+- AI出题官：根据知识点自动生成谜题、成语接龙、猜谜语
+- 智能NPC：基于角色设定的多轮对话
+- 游戏裁判：判定答案正确性、解释规则、给出提示
+
+### **2.2.2 游戏循环设计**
+
+典型的AI小游戏由"输入→调用大模型→解析输出→更新游戏状态→渲染"的循环构成。游戏状态（State）建议用字典或类维护，便于保存分数、回合数、剧情进度等信息。
+
+## **2.3 实验内容**
+
+### **实验2-1：AI文字冒险游戏**
+
+【实验说明】本实验开发一款由大模型实时生成剧情的文字冒险游戏，综合练习system提示词设计、JSON状态管理与多轮对话。
+
+步骤1：精心设计system提示词（SYSTEM_PROMPT）。这是游戏成败的关键：需要明确规定GM的身份、剧情长度限制（100字以内）、每轮必须给出3个选项、JSON返回格式以及游戏结束条件。提示词越具体，生成越稳定。
+
+步骤2：定义adventure_turn函数，接收客户端、对话历史和玩家行动。将玩家行动包装成user消息追加到history，连同system消息一起发送。
+
+步骤3：使用response_format强制JSON输出，并用json.loads解析得到story（剧情文本）、options（选项列表）和game_over（结束标志）。
+
+步骤4：将模型的原始回复也追加到history，使模型了解自己上一轮生成的剧情，保持世界观一致。
+
+步骤5：编写主循环：打印剧情与选项 → 等待玩家输入行动 → 调用adventure_turn → 若game_over为true则结束游戏并给出结局。
+
+调试建议：若模型偶尔不返回合法JSON，可在解析失败时将错误信息反馈给模型要求重新生成（自我纠错重试）。
+
+import json
+
+SYSTEM_PROMPT = """你是一款文字冒险游戏的GM（游戏主持人）。
+
+规则：根据玩家的行动生成100字以内的剧情，并在结尾给出3个选项，
+
+严格返回JSON：{"story": "...", "options": \["...", "...", "..."]}
+
+若玩家死亡则设置 "game_over": true"""
+
+def adventure_turn(client, history, action):
+
+history.append({"role": "user", "content": f"玩家行动：{action}"})
+
+resp = client.chat.completions.create(model="deepseek-chat",
+
+messages=\[{"role": "system", "content": SYSTEM_PROMPT}] + history,
+
+temperature=0.9, response_format={"type": "json_object"})
+
+state = json.loads(resp.choices\[0].message.content)
+
+history.append({"role": "assistant", "content": resp.choices\[0].message.content})
+
+return state
+
+### **实验2-2：AI猜谜/成语接龙游戏**
+
+【实验说明】本实验实现"AI出题—玩家作答—AI裁判"的完整游戏闭环，重点练习用低温度保证裁判的公正与稳定。
+
+步骤1：实现ai_quiz函数。提示词中明确主题（topic）和难度（difficulty）两个变量，要求返回包含question、answer、hint三个字段的JSON。玩家答不出时可消耗积分换取hint提示。
+
+步骤2：实现judge函数。将题目、正确答案和玩家回答一并交给模型判定，要求返回correct布尔值和comment点评。注意裁判任务需要确定性，temperature必须设为0.0，且给出完整上下文避免模型凭空猜测答案。
+
+步骤3：编写主循环：调用ai_quiz出题 → 玩家输入回答 → 调用judge判定 → 根据correct更新积分 → 询问是否继续下一题。
+
+步骤4：成语接龙变体：将judge的逻辑改为"判断用户成语是否以上一个成语的最后一字开头"，体会提示词逻辑设计对游戏玩法的影响。
+
+对比思考：出题用高温（1.0）保证题目多样性，裁判用低温（0.0）保证判定稳定——这是游戏中"生成与判定分离"的典型温度策略。
+
+def ai_quiz(client, topic, difficulty):
+
+prompt = f"围绕主题【{topic}】生成一道{difficulty}难度的猜谜题，"
+
+prompt += '返回JSON：{"question": "...", "answer": "...", "hint": "..."}'
+
+resp = client.chat.completions.create(model="deepseek-chat",
+
+messages=\[{"role": "user", "content": prompt}],
+
+temperature=1.0, response_format={"type": "json_object"})
+
+return json.loads(resp.choices\[0].message.content)
+
+def judge(client, question, answer, user_reply):
+
+prompt = (f"题目：{question}，正确答案：{answer}\\n"
+
+f"玩家回答：{user_reply}\\n请判定对错并给出简短点评，"
+
+'返回JSON：{"correct": true/false, "comment": "..."}')
+
+resp = client.chat.completions.create(model="deepseek-chat",
+
+messages=\[{"role": "user", "content": prompt}], temperature=0.0,
+
+response_format={"type": "json_object"})
+
+return json.loads(resp.choices\[0].message.content)
+
+### **实验2-3：带图形界面的小游戏（Gradio）**
+
+【实验说明】本实验为文字冒险游戏加上Web图形界面，体验从控制台程序到可分享应用的跨越。
+
+步骤1：安装Gradio：pip install gradio。Gradio用纯Python代码即可生成网页界面，无需前端知识，非常适合课程实训与原型开发。
+
+步骤2：理解gradio.Blocks页面布局：Chatbot组件负责对话展示，Textbox负责输入与选项展示，State组件在多次交互间保存游戏历史（history_state）。
+
+步骤3：编写play回调函数：接收玩家行动和游戏状态 → 调用实验2-1的adventure_turn → 返回更新后的对话记录（Gradio要求以(user, assistant)元组列表形式传给Chatbot）和选项文本。
+
+步骤4：通过action.submit事件将文本框提交绑定到play函数，并正确声明输入输出组件列表的对应顺序。
+
+步骤5：运行demo.launch()，浏览器自动打开游戏页面。完整玩一局后，尝试通过server_name="0.0.0.0"参数让局域网内其他同学也能访问。
+
+预期结果：网页中显示GM生成的剧情与3个选项，玩家在输入框打字即可推进游戏。
+
+import gradio as gr
+
+def play(user_action, history_state):
+
+state = adventure_turn(client, history_state, user_action)
+
+story = state.get("story", "")
+
+opts = state.get("options", \[])
+
+log = history_state + \[("你", user_action), ("GM", story)]
+
+return log, log, "\\n".join(f"{i+1}. {o}" for i, o in enumerate(opts))
+
+with gr.Blocks(title="AI文字冒险") as demo:
+
+chatbot = gr.Chatbot()
+
+options = gr.Textbox(label="可选行动")
+
+action = gr.Textbox(label="输入你的行动")
+
+state = gr.State(\[{"role": "system", "content": SYSTEM_PROMPT}])
+
+action.submit(play, \[action, state], \[chatbot, state, options])
+
+demo.launch()
+
+## **2.4 实验任务**
+
+1. 实现一个AI文字冒险游戏：包含剧情生成、分支选项、游戏结束判定，至少完成3个回合的完整游戏流程
+2. 实现一个AI猜谜游戏：支持选择题目主题与难度、答题判定、积分统计与提示功能
+3. 为任意一个游戏添加Gradio图形界面，并截图展示运行效果
+4. 记录每次API调用的token消耗，估算完整玩一局游戏的成本
+
+## **2.5 思考题**
+
+1. 游戏中temperature设高与设低各有什么利弊？
+2. 如何保证大模型生成的游戏规则前后一致？（提示：system提示词、状态校验）
+3. 如果玩家输入恶意提示词（如"忽略之前规则"），应如何在程序层面防护？
+
+# **实验三：网络热词分析与舆情洞察**
+
+# **3.1 实验目的**
+
+- 掌握热词/热搜数据的采集与清洗方法
+- 掌握利用大模型进行文本摘要、关键词提取与情感分析的方法
+- 掌握热词可视化与简单舆情报告的生成
+
+# **3.2 理论基础**
+
+## **3.2.1 热词数据来源**
+
+- 平台热搜榜单API/网页：微博热搜、百度热搜、知乎热榜等
+- 新闻与评论爬虫：requests + BeautifulSoup（注意遵守robots协议与网站条款）
+- 公开数据集与开放平台接口
+
+## **3.2.2 大模型文本分析能力**
+
+- 关键词提取：从长文本中抽取核心热词与话题标签
+- 情感分析：对评论进行正/负/中性情感判定与归因
+- 文本聚类与摘要：将相似热榜条目聚合，自动生成事件摘要
+
+## **3.2.3 可视化方法**
+
+常用可视化包括：热词词云、热搜排名条形图、情感占比饼图、热度时间序列折线图、事件主题聚类图等。
+
+# **3.3 实验内容**
+
+## **实验3-1：热搜数据采集**
+
+【实验说明】本实验完成热词分析的第一步——数据获取。以微博热搜为例，掌握requests+BeautifulSoup的基本爬取流程。
+
+步骤1：分析目标页面结构。用浏览器打开热搜页，按F12进入开发者工具，观察每条热搜对应的HTML标签结构（本例中为tr行，标题在td.td-02的a标签内，热度值在同目录span内）。
+
+步骤2：发起HTTP请求时必须携带User-Agent头模拟浏览器，否则可能被服务器拒绝。设置timeout防止程序永久阻塞。
+
+步骤3：用BeautifulSoup解析HTML，通过CSS选择器逐条提取排名、标题、热度三个字段，过滤掉无标题的行（如"置顶"行样式不同）。
+
+步骤4：将采集结果保存为JSON或CSV文件，并记录采集时间作为后续时序分析的时间戳。
+
+注意事项：控制请求频率（建议间隔3秒以上），遵守网站robots协议与服务条款，仅用于学习用途。若页面结构变化导致解析失败，需重新检查选择器。
+
+import requests
+
+from bs4 import BeautifulSoup
+
+def crawl_weibo_top(n=20):
+
+url = "https://s.weibo.com/top/summary?cate=realtimehot"
+
+headers = {"User-Agent": "Mozilla/5.0"}
+
+resp = requests.get(url, headers=headers, timeout=10)
+
+soup = BeautifulSoup(resp.text, "htmlparser" if False else "html.parser")
+
+items = \[]
+
+for tr in soup.select("tr")\[:n]:
+
+rank = tr.select_one("td.td-01")
+
+title = tr.select_one("td.td-02 a")
+
+hot = tr.select_one("td.td-02 span")
+
+if title:
+
+items.append({"rank": rank.text.strip() if rank else "",
+
+"title": title.text.strip(),
+
+"heat": hot.text.strip() if hot else ""})
+
+return items
+
+## **实验3-2：大模型热词摘要与情感分析**
+
+【实验说明】本实验利用大模型的语义理解能力，将20条热搜条目自动聚类为事件主题并生成摘要，这是人工处理难以快速完成的工作。
+
+步骤1：将采集到的热搜标题拼接成编号列表，作为分析材料注入提示词。
+
+步骤2：设计三步任务提示词：(1) 将语义相近的条目聚为同一事件主题；(2) 每个主题生成50字以内的摘要；(3) 判断主题整体情感倾向（正/负/中性）。明确要求仅返回JSON数组并给出字段示例。
+
+步骤3：temperature设为0.0保证分析稳定。调用API并解析返回的JSON数组，每个元素包含topic、items（归属条目）、summary、sentiment四个字段。
+
+步骤4：统计各主题包含的热搜条目数量，作为"热度"的近似度量；汇总情感分布数据，供实验3-3可视化使用。
+
+质量检查：人工核对2~3个主题的分类与摘要是否合理，思考大模型聚类相比传统关键词匹配的优势与误判风险。
+
+def analyze_hot_topics(client, items):
+
+titles = "\\n".join(f"{i+1}. {it\['title']}" for i, it in enumerate(items))
+
+prompt = ("以下是当前热搜榜单：\\n" + titles +
+
+"\\n\\n请完成：1) 将条目聚类为事件主题；"
+
+"2) 为每个主题生成50字以内摘要；3) 判断各主题情感倾向。"
+
+'仅返回JSON数组：\[{"topic": "...", "items": \[...], '
+
+'"summary": "...", "sentiment": "正面/负面/中性"}]')
+
+resp = client.chat.completions.create(model="deepseek-chat",
+
+messages=\[{"role": "user", "content": prompt}],
+
+temperature=0.0, response_format={"type": "json_object"})
+
+return json.loads(resp.choices\[0].message.content)
+
+## **实验3-3：热词可视化**
+
+【实验说明】将分析结果转化为直观图表，练习matplotlib与词云的基本用法。
+
+步骤1：绘制热搜主题条形图。以主题为y轴、热度（条目数或实际热度值）为x轴，横向条形图适合展示排名类数据。注意解决中文乱码问题——需指定中文字体（如simhei.ttf）。
+
+步骤2：生成热词词云。将所有主题标题拼接为长文本传给WordCloud，font_path必须指向中文字体文件，否则显示为方框。可调整width/height与背景色。
+
+步骤3：绘制情感占比饼图。统计实验3-2输出的正/负/中性主题数量，用饼图展示舆论整体倾向。
+
+步骤4：为每张图添加标题、坐标轴标签并保存为图片文件（plt.savefig），供插入实验报告使用。
+
+import matplotlib.pyplot as plt
+
+from wordcloud import WordCloud
+
+\# 1) 热搜排名条形图
+
+topics = \[t\["topic"] for t in analysis]
+
+plt.barh(range(len(topics)), \[1]*len(topics))   # 实际绘制热度值
+
+plt.yticks(range(len(topics)), topics)
+
+plt.title("今日热点事件")
+
+plt.show()
+
+\# 2) 词云
+
+wc = WordCloud(font_path="simhei.ttf", width=800, height=400)
+
+wc.generate(" ".join(topics))
+
+plt.imshow(wc); plt.axis("off"); plt.show()
+
+## **实验3-4：自动生成舆情日报（可选扩展）**
+
+【实验说明】本实验将前面各环节串联为自动化流水线：采集 → 分析 → 生成Word报告，体验"数据到文档"的自动化。
+
+步骤1：用python-docx创建Document对象，以"每日热词舆情简报"为文档标题（heading level 0为标题样式）。
+
+步骤2：遍历实验3-2的主题分析结果，每个主题写入一级标题，其下写入摘要与情感倾向段落。
+
+步骤3：调用doc.save保存文档，用Word打开检查排版效果。
+
+步骤4（进阶）：结合schedule库或操作系统的定时任务，每天固定时间自动执行采集-分析-生成-保存全流程，实现真正的自动化日报。
+
+from docx import Document
+
+doc = Document()
+
+doc.add_heading("每日热词舆情简报", 0)
+
+for t in analysis:
+
+doc.add_heading(t\["topic"], level=1)
+
+doc.add_paragraph(f"摘要：{t\['summary']}")
+
+doc.add_paragraph(f"情感倾向：{t\['sentiment']}")
+
+doc.save("daily_report.docx")
+
+# **3.4 实验任务**
+
+1. 采集某一平台（微博/百度/知乎任选）当日热搜TOP20，保存为CSV/JSON
+2. 使用大模型对热榜条目进行主题聚类与摘要，输出结构化JSON
+3. 绘制至少两种可视化图表（如词云+情感占比饼图）
+4. 综合以上内容，生成一份不少于500字的舆情分析报告（可借助大模型辅助撰写）
+
+# **3.5 思考题**
+
+1. 大模型情感分析相比传统词典/机器学习方法的优缺点是什么？
+2. 采集网络数据时需要注意哪些法律与伦理问题？
+3. 热搜数据存在哪些偏差？如何避免"以偏概全"的舆情结论？
+
+# **实验四：AI智能体与RAG知识库应用开发**
+
+# **4.1 实验目的**
+
+- 理解RAG（检索增强生成）的基本原理与 pipeline
+- 掌握Embedding向量化、向量检索与提示词拼接的方法
+- 掌握使用Streamlit快速开发AI应用（APP）并部署的方法
+
+# **4.2 理论基础**
+
+## **4.2.1 RAG架构**
+
+RAG（Retrieval-Augmented Generation，检索增强生成）通过"检索→增强→生成"三步，让大模型基于私有知识库回答问题，缓解幻觉问题。核心组件：文档切分（Chunking）、向量化（Embedding）、向量数据库（FAISS/Chroma）、重排与生成。
+
+## **4.2.2 Embedding与相似度检索**
+
+Embedding将文本映射为稠密向量，语义相近的文本在向量空间中距离更近。常用相似度度量：余弦相似度。
+
+## **4.2.3 AI应用界面开发**
+
+Streamlit/Gradio允许用纯Python快速构建Web应用，适合课程实训与原型开发；生产环境可进一步使用Flask/FastAPI + 前端框架。
+
+# **4.3 实验内容**
+
+## **实验4-1：文档加载与切分**
+
+【实验说明】RAG的第一步是将知识文档切分为适合检索的文本块（chunk），切分质量直接决定问答效果。
+
+步骤1：准备一份不少于5000字的私有知识文档（如课程讲义、校规、产品手册），以纯文本（.txt）或Markdown格式保存，注意清除无关的页眉页脚与格式符号。
+
+步骤2：安装切分工具：pip install langchain-text-splitters。
+
+步骤3：使用RecursiveCharacterTextSplitter进行递归切分：优先按段落边界切，段落过长时再按句子切。chunk_size=300表示每块约300字符，chunk_overlap=50表示相邻块重叠50字符——重叠可保证语义在块边界处不被割裂。
+
+步骤4：打印切分后的块数，并抽查若干块确认切分边界合理（如"第X章"标题未被拦腰截断）。
+
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+with open("knowledge.txt", encoding="utf-8") as f:
+
+text = f.read()
+
+splitter = RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=50)
+
+chunks = splitter.split_text(text)
+
+print(f"共切分为 {len(chunks)} 个片段")
+
+## **实验4-2：向量化与FAISS索引**
+
+【实验说明】将文本块转为向量并建立索引，使语义检索成为可能。本实验完全在本地运行，不消耗API费用。
+
+步骤1：安装依赖：pip install sentence-transformers faiss-cpu。首次运行会自动下载Embedding模型（BAAI/bge-small-zh-v1.5，约100MB，中文效果好）。
+
+步骤2：调用model.encode将实验4-1的chunks批量编码为向量，设置normalize_embeddings=True使向量模长为1——此时向量内积在数学上等价于余弦相似度。
+
+步骤3：创建FAISS索引。IndexFlatIP是精确内积索引（数据量小于百万级时足够用且无需训练），将向量转为float32后批量add进索引。
+
+步骤4：保存chunks列表与索引的对应关系（chunks\[i]与索引中第i个向量一一对应），供检索时回取原文。
+
+验证：随便选第3个块的向量与自身做点积，结果应接近1.0，说明索引建立正确。
+
+from sentence_transformers import SentenceTransformer
+
+import faiss
+
+import numpy as np
+
+model = SentenceTransformer("BAAI/bge-small-zh-v1.5")
+
+embeddings = model.encode(chunks, normalize_embeddings=True)
+
+index = faiss.IndexFlatIP(embeddings.shape\[1])   # 内积（等价于余弦相似度）
+
+index.add(embeddings.astype(np.float32))
+
+## **实验4-3：检索增强问答**
+
+【实验说明】本实验实现RAG的核心链路：问题向量化 → 检索最相关文本块 → 拼接进提示词 → 大模型生成有据可查的回答。
+
+步骤1：将用户问题用同一个Embedding模型编码（务必与知识库使用同一模型，否则向量空间不一致），并在FAISS索引中检索top_k=3个最相似块。
+
+步骤2：按检索结果ids从chunks中回取原文，用空行拼接为context。top_k取值需要权衡：过小可能检索不全，过大会引入无关内容干扰模型并增加token开销。
+
+步骤3：构造增强提示词，关键指令是"请仅根据以下资料回答问题，若资料不足请如实说明"——前半句约束模型 grounding 在资料上，后半句防止模型在资料不足时编造（幻觉）。
+
+步骤4：以较低temperature（0.1）调用大模型，同时返回答案和引用来源列表，供界面展示和人工核查。
+
+测试方法：先问一个知识库内的问题（应准确回答），再问一个库外问题（应坦诚说明资料不足而非瞎编），两者都通过才算成功。
+
+def rag_answer(client, question, top_k=3):
+
+q_emb = model.encode(\[question], normalize_embeddings=True)
+
+scores, ids = index.search(q_emb.astype(np.float32), top_k)
+
+context = "\\n\\n".join(chunks\[i] for i in ids\[0])
+
+prompt = (f"请仅根据以下资料回答问题，若资料不足请如实说明。\\n\\n"
+
+f"【资料】\\n{context}\\n\\n【问题】{question}")
+
+resp = client.chat.completions.create(model="deepseek-chat",
+
+messages=\[{"role": "user", "content": prompt}], temperature=0.1)
+
+return resp.choices\[0].message.content, \[chunks\[i] for i in ids\[0]]
+
+# **实验4-4：Streamlit问答APP**
+
+【实验说明】本实验将RAG问答包装为完整的Web应用，掌握Streamlit的会话状态管理与聊天界面组件。
+
+步骤1：安装Streamlit：pip install streamlit。将实验4-3的逻辑整理为rag_answer(question)函数，供界面调用。
+
+步骤2：在应用启动时用st.session_state.messages保存对话历史——Streamlit每次交互都会重新执行整个脚本，只有session_state中的数据能在多次交互间保留。
+
+步骤3：先渲染历史消息：遍历messages，用st.chat_message按角色（user/assistant）渲染气泡。
+
+步骤4：用st.chat_input接收用户输入，将其追加到messages后立即渲染用户气泡；随后调用rag_answer生成回答，用assistant气泡展示，并用st.expander折叠面板展示引用来源，方便用户核查答案依据。
+
+步骤5：在侧边栏添加"清空对话"按钮（st.sidebar.button），点击后清空messages并重置页面。
+
+步骤6：运行streamlit run app.py，浏览器自动打开应用。连续追问3个相关问题，验证上下文与来源展示是否正常。
+
+import streamlit as st
+
+st.set_page_config(page_title="校园知识问答助手")
+
+st.title("校园知识问答助手（RAG）")
+
+if "messages" not in st.session_state:
+
+st.session_state.messages = \[]
+
+for m in st.session_state.messages:
+
+with st.chat_message(m\["role"]):
+
+st.markdown(m\["content"])
+
+if question := st.chat_input("请输入你的问题"):
+
+st.session_state.messages.append({"role": "user", "content": question})
+
+with st.chat_message("user"):
+
+st.markdown(question)
+
+with st.chat_message("assistant"):
+
+answer, sources = rag_answer(client, question)
+
+st.markdown(answer)
+
+with st.expander("查看引用来源"):
+
+for s in sources:
+
+st.caption(s)
+
+st.session_state.messages.append({"role": "assistant", "content": answer})
+
+## **4.4 实验任务**
+
+1. 准备一份不少于5000字的私有知识文档（如校规、课程讲义、产品手册），完成切分与向量化
+2. 实现检索增强问答功能，要求返回答案的同时展示引用来源
+3. 使用Streamlit开发完整问答APP，界面包含：对话历史、来源折叠面板、清空对话按钮
+4. 设计10个测试问题，对比"纯大模型回答"与"RAG回答"的准确性，撰写对比分析
+
+## **4.5 思考题**
+
+1. chunk_size过大或过小分别会带来什么问题？
+2. 为什么RAG能缓解大模型幻觉？它能否完全消除幻觉？
+3. 除了FAISS，还有哪些向量数据库？各适用于什么场景？
+
+# **实验五：综合项目实战——端到端大模型应用开发**
+
+# **5.1 实验目的**
+
+- 综合运用前4个实验所学知识完成一个完整的AI应用项目
+- 掌握从需求分析、API集成、界面开发到部署上线的完整链路
+- 培养项目文档撰写与成果展示能力
+
+# **5.2 项目背景**
+
+AI原生应用正在快速普及。本项目要求以小组（1-3人）为单位，基于主流大模型平台，完成一个端到端的AI应用。可选方向：AI学习助手（RAG + 学习计划生成）、热词舆情监测工具（定时采集 + 日报推送）、AI互动小游戏、AI文案/简历生成工具等。
+
+# **5.3 理论基础**
+
+## **5.3.1 应用架构**
+
+- 前端界面：Streamlit/Gradio
+- 应用逻辑：Python（会话管理、提示词模板、数据流）
+- 模型服务：大模型API + Embedding模型
+- 数据存储：文件/向量数据库/SQLite
+
+## **5.3.2 评估指标**
+
+- 功能完整性：需求覆盖度
+- 生成质量：准确率/相关性（人工评分或自动评估）
+- 工程指标：响应延迟、API成本、异常处理健壮性
+
+# **5.4 实验内容**
+
+**实验5-1：需求分析与原型设计**
+
+【实验说明】综合项目的第一步是把想法变成可执行的设计文档，避免直接写代码导致返工。
+
+步骤1：确定选题后撰写PRD：明确目标用户（给谁用）、核心场景（解决什么问题）、功能清单（Must have / Nice to have）、使用流程图。
+
+步骤2：编写提示词模板库：将system提示词与各类任务提示词独立为.md文件管理，与代码分离，方便迭代提示词时无需改代码。
+
+步骤3：画界面草图（手绘或Figma均可）：标出主要组件（输入框、按钮、结果区、来源区），作为前端开发的参照。
+
+\# 交付物清单（示例）：
+
+\# 1. PRD文档：目标用户、核心功能、使用流程
+
+\# 2. 提示词模板库：system_prompt.md, task_prompts/*.md
+
+\# 3. 原型界面草图
+
+## **实验5-2：核心功能开发**
+
+【实验说明】按照推荐的项目结构组织代码，养成良好的工程习惯。
+
+步骤1：llm.py封装大模型调用，内置重试机制（遇429/5xx错误时指数退避重试3次）与统一异常处理，业务代码不直接依赖SDK细节。
+
+步骤2：prompts.py集中管理提示词模板，支持参数插值（如f-string或format），便于A/B测试不同提示词。
+
+步骤3：app.py只负责界面与流程编排，通过import调用前两个模块。密钥一律从环境变量读取（os.environ），.gitignore中排除.env文件，防止密钥泄露。
+
+步骤4：每完成一个功能点即运行一次完整流程自测，及时修复问题再进入下一个功能点，避免最后集中调试。
+
+\# 推荐项目结构
+
+\# my_ai_app/
+
+\# ├── app.py            # Streamlit主程序
+
+\# ├── llm.py            # 大模型API封装（含重试与异常处理）
+
+\# ├── prompts.py        # 提示词模板
+
+\# ├── data/             # 知识库与缓存
+
+\# └── requirements.txt
+
+## **实验5-3：评估与迭代**
+
+【实验说明】用"大模型当裁判（LLM-as-Judge）"的思路建立简单的自动评估流程，摆脱纯人工试用的主观性。
+
+步骤1：编写不少于10条测试用例，覆盖核心功能、边界情况（空输入、超长输入、无关问题）和典型用户场景，并为每题准备参考答案。
+
+步骤2：实现llm_judge函数：将问题、参考答案、待评答案交给大模型，从准确性、完整性、相关性三个维度1~5分打分并要求给出理由，temperature设为0保证评分稳定。
+
+步骤3：批量跑全部测试用例，汇总评分表，定位低分用例的共同特征（如某类问题提示词覆盖不足）。
+
+步骤4：针对性修改提示词或检索策略后重新评估，对比改进前后平均分，将过程记录进报告的"结果分析"章节——评估-迭代的证据链是报告的重要加分项。
+
+\# 简单的自动评估示例：让大模型当裁判
+
+def llm_judge(client, question, answer, reference):
+
+prompt = (f"【问题】{question}\\n【参考答案】{reference}\\n"
+
+f"【待评答案】{answer}\\n请从准确性、完整性、相关性"
+
+"三方面1-5分评分并说明理由，返回JSON。")
+
+resp = client.chat.completions.create(model="deepseek-chat",
+
+messages=\[{"role": "user", "content": prompt}], temperature=0.0,
+
+response_format={"type": "json_object"})
+
+return json.loads(resp.choices\[0].message.content)
+
+## **实验5-4：部署与展示**
+
+【实验说明】让应用走出本地、可被他人访问，完成端到端的最后一步。
+
+步骤1：本地最终验证：streamlit run app.py 完整走一遍核心流程，确认无明显bug。
+
+步骤2：选择部署平台：Streamlit Community Cloud（与GitHub集成最简）或Hugging Face Spaces（AI应用生态好），均免费。将代码推送到GitHub仓库（注意已排除.env）。
+
+步骤3：在部署平台连接仓库，将API Key等敏感信息填入平台提供的Secrets管理功能（而非写入代码）。
+
+步骤4：部署完成后生成公开链接，发给其他同学试用并收集反馈；录制3分钟演示视频，展示核心功能、亮点设计与一次评估迭代的实例。
+
+注意事项：公开部署的应用要控制API调用频率，防止被恶意刷量产生高额费用（可参考拓展任务中的限流方案）。
+
+\# 本地运行
+
+streamlit run app.py
+
+\# 公开部署（任选其一）：
+
+\# Streamlit Community Cloud / Hugging Face Spaces / 云服务器 + Nginx
+
+# **5.5 实验任务**
+
+1. 完成项目选题与需求分析，撰写PRD（不少于1页）
+2. 完成核心功能开发，代码需包含异常处理、API重试与密钥管理（环境变量读取）
+3. 设计不少于10条测试用例，从功能与生成质量两方面评估，记录结果并迭代优化
+4. 部署应用并录制3分钟以内的演示视频或现场演示
+5. 撰写项目报告：问题定义、方案设计、实验设置、结果分析、总结与展望
+
+# **5.6 拓展任务（选做）**
+
+1. 引入Function Calling，让大模型调用天气、计算器等外部工具
+2. 实现多模态能力：支持图片上传与理解（多模态API）
+3. 增加用户系统与调用日志，实现简单的用量统计与限流
+
+# **附  录**
+
+**推荐大模型平台**
+
+|  |  |  |  |
+| --- | --- | --- | --- |
+| **平台** | **兼容接口** | **特点** | **适用场景** |
+| DeepSeek | OpenAI兼容 | 性价比高、推理能力强 | 通用对话、推理任务 |
+| 通义千问 | OpenAI兼容/DashScope | 中文优化好、工具丰富 | 中文应用、企业场景 |
+| Kimi | OpenAI兼容 | 长文本能力强（200万字符） | 长文档分析 |
+| 智谱GLM | OpenAI兼容 | 开源生态好、多模态 | 研究、多模态应用 |
+| OpenAI | 原生接口 | 生态最成熟、模型丰富 | 国际业务、前沿能力 |

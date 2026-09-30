@@ -1,0 +1,17 @@
+# 课程学习助手 —— 依赖清单
+# 安装：pip install -r requirements.txt
+# 国内建议加镜像：pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# ---------- 大模型调用 ----------
+openai>=1.30
+
+# ---------- 检索与向量 ----------
+sentence-transformers>=3.0      # 会一并安装 torch，体积较大（约 1-2 GB）
+faiss-cpu>=1.8
+langchain-text-splitters>=0.3
+
+# ---------- 界面 ----------
+streamlit>=1.30
+
+# ---------- 数据处理 ----------
+numpy>=1.25
