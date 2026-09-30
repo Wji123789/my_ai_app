@@ -48,17 +48,44 @@ class LLMError(Exception):
 
 
 # ---------- 密钥管理 ----------
-def _build_client():
-    """从环境变量读取密钥构造客户端。
+def _get_api_key():
+    """获取密钥，支持两种来源。
 
-    密钥绝不写进代码，也不进版本库（.gitignore 已排除 .env）。
+    本地运行  -> 读环境变量 DEEPSEEK_API_KEY
+    云端部署  -> 读部署平台的 Secrets（Streamlit Community Cloud 用
+                 .streamlit/secrets.toml 管理，界面上叫 Secrets）
+
+    两种来源都不写死在代码里，密钥也不会进版本库
+    （.gitignore 已排除 .env 与 secrets.toml）。
     """
-    api_key = os.environ.get("DEEPSEEK_API_KEY")
+    # 1) 环境变量（本地开发）
+    key = os.environ.get("DEEPSEEK_API_KEY")
+    if key:
+        return key
+
+    # 2) Streamlit Secrets（云端部署）
+    #    没有安装 streamlit 或不在 Streamlit 环境里时，这里会抛异常，忽略即可
+    try:
+        import streamlit as st
+        key = st.secrets.get("DEEPSEEK_API_KEY")
+        if key:
+            return key
+    except Exception:
+        pass
+
+    return None
+
+
+def _build_client():
+    """构造客户端。密钥绝不写进代码，也不进版本库。"""
+    api_key = _get_api_key()
     if not api_key:
         raise LLMError(
-            "未找到环境变量 DEEPSEEK_API_KEY。\n"
-            "请在终端中设置后重开窗口：\n"
-            '  [Environment]::SetEnvironmentVariable("DEEPSEEK_API_KEY","sk-xxx","User")'
+            "未找到大模型密钥。请按运行环境任选一种方式配置：\n\n"
+            "【本地运行】设置环境变量后重开终端：\n"
+            '  [Environment]::SetEnvironmentVariable("DEEPSEEK_API_KEY","sk-xxx","User")\n\n'
+            "【云端部署】在部署平台的 Secrets 中配置：\n"
+            '  DEEPSEEK_API_KEY = "sk-xxx"'
         )
     return OpenAI(api_key=api_key, base_url=BASE_URL)
 
